@@ -36,7 +36,7 @@ class Student
 
   def self.find_by_name(name)
     sql = <<-SQL
-      SELECT * FROM students WHERE name = ?
+      SELECT * FROM students WHERE name = ? LIMIT 1
     SQL
 
     student = DB[:conn].execute(sql, name)[0]
@@ -51,7 +51,7 @@ class Student
 
   def self.create_table
     sql = <<-SQL
-      CREATE TABLE students (
+      CREATE TABLE IF NOT EXISTS students (
         id INTEGER PRIMARY KEY,
         name TEXT,
         grade TEXT
@@ -63,11 +63,9 @@ class Student
 
   def self.drop_table
     sql = <<-SQL
-      DROP TABLE students
+      DROP TABLE IF EXISTS students
     SQL
 
     DB[:conn].execute(sql)
   end
-
-
 end
